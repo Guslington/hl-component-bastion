@@ -37,6 +37,7 @@ CloudFormation do
     AssumeRolePolicyDocument service_role_assume_policy(iam_services)
     Path '/'
     Policies(policies)
+    ManagedPolicyArns managed_policies.map { |role| role.start_with?('arn') ? role : "arn:aws:iam::aws:policy/service-role/#{role}"  } if defined? managed_policies
     Metadata({
       cfn_nag: {
         rules_to_suppress: [
